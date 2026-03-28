@@ -11,7 +11,7 @@ template <class T> using ordered_set = tree<T, null_type, less<T>, rb_tree_tag,t
 #define fastio ios_base::sync_with_stdio(0); cin.tie(0);
 mt19937_64 rng(std::chrono::steady_clock::now().time_since_epoch().count());
 
-// #define V_KAARTI_LOCAL 
+#define V_KAARTI_LOCAL 
 #define int long long
 #define endl '\n'
 #define all(x) x.begin(), x.end()

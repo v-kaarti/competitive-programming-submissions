@@ -1,5 +1,5 @@
 {
-    "code-runner.executorMap": {
-        "cpp": "cd $dir && g++ -std=c++20 $fileName -o /Users/vkaarti/cp/bin/$fileNameWithoutExt && /Users/vkaarti/cp/bin/$fileNameWithoutExt < /Users/vkaarti/cp/input.txt > /Users/vkaarti/cp/output.txt"
-    }
+  "code-runner.executorMap": {
+    "cpp": "bash $workspaceRoot/scripts/run_cpp.sh \"$fullFileName\""
+  }
 }

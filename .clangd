@@ -1,2 +1,2 @@
 CompileFlags:
-  Compiler: /opt/homebrew/bin/g++-14
+  Compiler: g++-14
