@@ -1,5 +1,5 @@
 {
   "code-runner.executorMap": {
-    "cpp": "bash $workspaceRoot/scripts/run_cpp.sh \"$fullFileName\""
+    "cpp": "bash \"$workspaceRoot/scripts/run_cpp.sh\" \"$fullFileName\""
   }
 }
