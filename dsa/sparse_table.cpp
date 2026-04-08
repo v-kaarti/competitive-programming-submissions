@@ -18,7 +18,7 @@ inline constexpr bool idempotent<max_f> = true;
 template <>
 inline constexpr bool idempotent<gcd_f> = true;
 
-template <auto f>
+template <auto func>
 struct SparseTable {
     int N;
     int K;
@@ -43,7 +43,7 @@ struct SparseTable {
 
         for (int i = 1; i <= K; ++i) {
             for (int j = 0; j + (1 << i) <= N; ++j) {
-                st[i][j] = f(st[i - 1][j], st[i - 1][j + (1 << (i - 1))]);
+                st[i][j] = func(st[i - 1][j], st[i - 1][j + (1 << (i - 1))]);
             }
         }
     }
@@ -57,7 +57,7 @@ struct SparseTable {
                 if (first) {
                     res = st[i][L];
                     first = false;
-                } else res = f(res, st[i][L]);
+                } else res = func(res, st[i][L]);
                 L += 1 << i;
             }
         }
@@ -65,9 +65,9 @@ struct SparseTable {
         return res;
     }
 
-    int query_fast(int L, int R) const requires(idempotent<f>) {
+    int query_fast(int L, int R) const requires(idempotent<func>) {
         int i = lg[R - L + 1];
-        return f(st[i][L], st[i][R - (1 << i) + 1]);
+        return func(st[i][L], st[i][R - (1 << i) + 1]);
     }
 };
 
