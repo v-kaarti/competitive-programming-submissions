@@ -175,22 +175,20 @@ vector<long long> get_divs(long long n) {
 void precompute() {}
 
 void solve(int tc){
-    unsigned int a, b; cin >> a >> b;
-
-    if (b == (a | b)) {
-        cout << 1 << endl;
-        return;
+    int a, b; cin >> a >> b;
+    int ans = b - a;
+    for (int a1 = a; a1 < b; ++a1) {
+        int b1 = 0;
+        for (int i = 25; i >= 0; --i) {
+            int a1bit = (a1 >> i) & 1, bbit = (b >> i) & 1;
+            if (bbit) b1 |= (1 << i);
+            else if (a1bit) {
+                b1 |= (1 << i);
+                break;
+            } 
+        }
+        ans = min(ans, (a1 - a) + (b1 - b) + ((a1 | b1) - b1) + 1);
     }
-
-    unsigned int ans = b - a;
-
-    for (int i = 0; i <= 21; ++i) {
-        int add = (1 << i) - 1;
-        if (add >= a) break;
-        cout << add << endl;
-        ans = min(ans, (b + add) | (a) - (b + add));
-    }
-    
     cout << ans << endl;
 }
 
