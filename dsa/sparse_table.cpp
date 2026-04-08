@@ -31,7 +31,7 @@ struct SparseTable {
 
     void build(const vector<int>& array) {
         N = (int) array.size();
-        K = N ? 31 - __builtin_clz(N) : 0;
+        K = N ? (32 - __builtin_clz(N)) - 1 : 0;
         st.assign(K + 1, vector<int>(N));
         lg.assign(N + 1, 0);
 
