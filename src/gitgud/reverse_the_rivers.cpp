@@ -39,7 +39,6 @@ template <class T> using V = vector<T>;
 using pi = pair<int, int>;
 using pd = pair<db, db>;
 using vi = V<int>;
-using vvi = V<vi>;
 using vb = V<bool>;
 using vd = V<db>;
 using vs = V<string>;
@@ -78,19 +77,11 @@ istream& operator>>(istream& cin, pair<A, B> &p) {
     return cin >> p.second;
 }
 
-// #define COLOR_OUTPUT
-#ifdef COLOR_OUTPUT
-    #define CLR(x) x
-#else
-    #define CLR(x) ""
-#endif
-
 template<typename T>
 void debug_named(string s, T x) {
-    cerr << CLR("\033[1;34m") << s
-         << CLR("\033[0;32m") << " = "
-         << CLR("\033[35m") << x
-         << CLR("\033[0m") << '\n';
+    cerr << "\033[1;34m" << s
+         << "\033[0;32m = \033[35m" << x
+         << "\033[0m\n";
 }
 
 template<typename T, typename... Args>
@@ -99,10 +90,9 @@ void debug_named(string s, T x, Args... args) {
         if (s[i] == '(' || s[i] == '{') b++;
         else if (s[i] == ')' || s[i] == '}') b--;
         else if (s[i] == ',' && b == 0) {
-            cerr << CLR("\033[1;34m") << s.substr(0, i)
-                 << CLR("\033[0;32m") << " = "
-                 << CLR("\033[35m") << x
-                 << CLR("\033[31m") << " | ";
+            cerr << "\033[1;34m" << s.substr(0, i)
+                 << "\033[0;32m = \033[35m" << x
+                 << "\033[31m | ";
             debug_named(s.substr(s.find_first_not_of(' ', i + 1)), args...);
             break;
         }
@@ -111,12 +101,12 @@ void debug_named(string s, T x, Args... args) {
 
 template<typename T>
 void debug_nameless(T x) {
-    cerr << CLR("\033[35m") << x << CLR("\033[0m") << '\n';
+    cerr << "\033[35m" << x << "\033[0m\n";
 }
 
 template<typename T, typename... Args>
 void debug_nameless(T x, Args... args) {
-    cerr << CLR("\033[35m") << x << CLR("\033[31m") << " | ";
+    cerr << "\033[35m" << x << "\033[31m | ";
     debug_nameless(args...);
 }
 
@@ -184,7 +174,47 @@ vector<long long> get_divs(long long n) {
 void precompute() {}
 
 void solve(int tc){
-    
+    int n, k, q, m, r, c; cin >> n >> k >> q;
+    char o;
+    V<vi> rmap(k, vi(n));
+    F0R(i, n) {
+        F0R(j, k) {
+            cin >> rmap[j][i];
+        }
+    }
+    F0R(j, k) {
+        FOR(i, 1, n) {
+            rmap[j][i] |= rmap[j][i - 1];
+        }
+    }
+    pr(rmap);
+    rep(q) {
+        cin >> m;
+        int gt = 0, lt = n;
+        bool ok = true;
+        rep(m) {
+            cin >> r >> o >> c;
+            r--;
+            auto& rel = rmap[r];
+            if (o == '>') {
+                auto it = upper_bound(rel.begin(), rel.end(), c);
+                if (it == rel.end()) {
+                    gt = lt;
+                    ok = false;
+                }
+                else gt = max(gt, (int) (it - rel.begin()));
+            } else {
+                auto it = lower_bound(rel.begin(), rel.end(), c);
+                if (it == rel.begin()) {
+                    gt = lt;
+                    ok = false;
+                }
+                else lt = min(lt, (int) (it - rel.begin()));
+            }
+        }
+        ok = ok && gt < lt;
+        cout << (ok ? gt + 1 : -1) << endl;
+    }
 }
 
 signed main() {

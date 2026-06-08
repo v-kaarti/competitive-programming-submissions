@@ -183,8 +183,27 @@ vector<long long> get_divs(long long n) {
 
 void precompute() {}
 
+struct matrix {
+    vvi mat;
+    int n;
+    matrix(const vvi& from) : mat(from), n(sz(from)) {}
+    matrix operator*(const matrix& other) const {
+        vvi ret(n, vi(n, 0));
+        for (int i = 0; i < n; ++i) {
+            for (int j = 0; j < n; ++j) {
+                for (int p = 0; p < n; ++p) {
+                    ret[i][j] += (mat[i][p] * other.mat[p][j]) % 1'000'000'007;
+                }
+            }
+        }
+        return matrix(ret);
+    }
+};
+
 void solve(int tc){
-    
+    int n, k;
+    cin >> n >> k;
+
 }
 
 signed main() {
