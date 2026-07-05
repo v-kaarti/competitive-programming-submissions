@@ -24,34 +24,25 @@ struct SparseTable {
     int K;
     vector<vector<int>> st{};
     vector<int> lg{0};
-
     SparseTable() = delete;
-
     SparseTable(const vector<int>& array) { build(array); }
-
     void build(const vector<int>& array) {
         N = (int) array.size();
-        K = N ? (32 - __builtin_clz(N)) - 1 : 0;
+        K = N ? bit_width((unsigned) N) - 1 : 0;
         st.assign(K + 1, vector<int>(N));
         lg.assign(N + 1, 0);
-
         if (N == 0) return;
-
         copy(array.begin(), array.end(), st[0].begin());
-
         for (int i = 2; i <= N; ++i) lg[i] = lg[i / 2] + 1;
-
         for (int i = 1; i <= K; ++i) {
             for (int j = 0; j + (1 << i) <= N; ++j) {
                 st[i][j] = func(st[i - 1][j], st[i - 1][j + (1 << (i - 1))]);
             }
         }
     }
-
     int query(int L, int R) const {
         bool first = true;
         int res = 0;
-
         for (int i = K; i >= 0; --i) {
             if ((1 << i) <= R - L + 1) {
                 if (first) {
@@ -61,10 +52,8 @@ struct SparseTable {
                 L += 1 << i;
             }
         }
-
         return res;
     }
-
     int query_fast(int L, int R) const requires(idempotent<func>) {
         int i = lg[R - L + 1];
         return func(st[i][L], st[i][R - (1 << i) + 1]);
